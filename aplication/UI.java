@@ -1,6 +1,10 @@
 package aplication;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 import chess.ChessPiece;
+import chess.ChessPosition;
 import chess.Color;
 
 public class UI {
@@ -26,6 +30,19 @@ public class UI {
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
     // https://stackoverflow.com/questions/2979383/java-clear-the-console
+    public static ChessPosition readChessPosition(Scanner sc) {
+        try{
+            String scanner = sc.nextLine();
+            scanner.toUpperCase();
+            char column = scanner.charAt(0);
+            int row = Integer.parseInt(scanner.substring(1));
+            return new ChessPosition(column, row);
+        } catch (RuntimeException e) {
+            throw new InputMismatchException("Error reading Chess Position! Valid values are from A1 to H8");
+        }
+        
+    }
+    
     public static void boardPrint(ChessPiece[][] pieces) {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print((8 - i) + " ");
