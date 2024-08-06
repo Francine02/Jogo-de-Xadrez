@@ -52,7 +52,7 @@ public class ChessMatch {
         }
     }
 
-    private Piece makeMove(Position target, Position source){
+    private Piece makeMove(Position source, Position target){
         Piece p = board.removePiece(source);
         Piece capturedPiece = board.removePiece(target);
         board.placePiece(p, target);

@@ -34,6 +34,9 @@ public class Board {
     }
 
     public void placePiece(Piece piece, Position position){
+        if (piece == null) {
+            throw new BoardException("Cannot place a null piece on the board");
+        }
         if (thereIsPiece(position)) {
             throw new BoardException("There is already a piece on position " + position);
         }
