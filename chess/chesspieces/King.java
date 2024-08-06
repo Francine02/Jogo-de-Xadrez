@@ -17,7 +17,7 @@ public class King extends ChessPiece{
 
     @Override
     public boolean[][] possibleMoves() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'possibleMoves'");
+        boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
+        return mat;
     }
 }
