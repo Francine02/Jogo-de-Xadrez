@@ -1,7 +1,10 @@
 package aplication;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import chess.ChessMatch;
 import chess.ChessPiece;
@@ -32,12 +35,12 @@ public class UI {
 
     // https://stackoverflow.com/questions/2979383/java-clear-the-console
     public static void clearScreen() {
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
-	}
-    
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static ChessPosition readChessPosition(Scanner sc) {
-        try{
+        try {
             String scanner = sc.nextLine();
             scanner.toUpperCase();
             char column = scanner.charAt(0);
@@ -46,9 +49,9 @@ public class UI {
         } catch (RuntimeException e) {
             throw new InputMismatchException("Error reading Chess Position! Valid values are from A1 to H8");
         }
-        
+
     }
-    
+
     public static void boardPrint(ChessPiece[][] pieces) {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print((8 - i) + " ");
@@ -61,13 +64,14 @@ public class UI {
         System.out.println("\n   A   B   C   D   E   F   G   H");
     }
 
-    public static void printMatch(ChessMatch chessMatch){
+    public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured) {
         boardPrint(chessMatch.getPieces());
+        printCapturedPieces(captured);
         System.out.println("\nTurn: " + chessMatch.getTurn());
         System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
     }
 
-    public static void boardPrint(ChessPiece[][] pieces, boolean[][] possibleMoves ) {
+    public static void boardPrint(ChessPiece[][] pieces, boolean[][] possibleMoves) {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print((8 - i) + " ");
             for (int j = 0; j < pieces.length; j++) {
@@ -80,20 +84,28 @@ public class UI {
     }
 
     private static void piecePrint(ChessPiece piece, boolean background) {
-    	if(background){
-            System.out.print(ANSI_GREEN_BACKGROUND );
+        if (background) {
+            System.out.print(ANSI_GREEN_BACKGROUND);
         }
         if (piece == null) {
             System.out.print(" - " + ANSI_RESET);
-        }
-        else {
+        } else {
             if (piece.getColor() == Color.WHITE) {
                 System.out.print(ANSI_WHITE + piece + ANSI_RESET);
-            }
-            else {
+            } else {
                 System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
             }
         }
         System.out.print(" ");
-	}
+    }
+
+    private static void printCapturedPieces(List<ChessPiece> captured) {
+        List<ChessPiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE)
+                .collect(Collectors.toList());
+
+        List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK)
+                .collect(Collectors.toList());
+
+        System.out.println("Captured pieces: \nWhite: " + ANSI_WHITE + Arrays.toString(white.toArray()) + ANSI_RESET + "\nBlack: " + ANSI_YELLOW + Arrays.toString(black.toArray()) + ANSI_RESET);
+    }
 }
