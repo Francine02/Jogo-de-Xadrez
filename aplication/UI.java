@@ -68,9 +68,13 @@ public class UI {
         boardPrint(chessMatch.getPieces());
         printCapturedPieces(captured);
         System.out.println("\nTurn: " + chessMatch.getTurn());
-        System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
-        if(chessMatch.isCheck()){
-            System.out.println("\nCHECK!!!");
+        if (!chessMatch.isCheckMate()) {
+            System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+            if (chessMatch.isCheck()) {
+                System.out.println("\nCHECK!!!");
+            }
+        } else {
+            System.out.println("CHECK MATE! \nWinner: " + chessMatch.getCurrentPlayer());
         }
     }
 
@@ -109,6 +113,7 @@ public class UI {
         List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK)
                 .collect(Collectors.toList());
 
-        System.out.println("Captured pieces: \nWhite: " + ANSI_WHITE + Arrays.toString(white.toArray()) + ANSI_RESET + "\nBlack: " + ANSI_YELLOW + Arrays.toString(black.toArray()) + ANSI_RESET);
+        System.out.println("Captured pieces: \nWhite: " + ANSI_WHITE + Arrays.toString(white.toArray()) + ANSI_RESET
+                + "\nBlack: " + ANSI_YELLOW + Arrays.toString(black.toArray()) + ANSI_RESET);
     }
 }
